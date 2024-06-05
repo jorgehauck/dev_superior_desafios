@@ -3,21 +3,23 @@ package com.devsuperior.desafio3.dto;
 import com.devsuperior.desafio3.entities.Client;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
-import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
+
 public class ClientDTO {
 
+    private Long id;
     @NotBlank(message = "Campo requerido")
     private String name;
     private String cpf;
     private Double income;
-    @PastOrPresent
+    @PastOrPresent(message = "Data de nascimento não pode ser uma data futura")
     private LocalDate birthDate;
     private Integer children;
 
-    public ClientDTO(String name, String cpf, Double income, LocalDate birthDate, Integer children) {
+    public ClientDTO(Long id, String name, String cpf, Double income, LocalDate birthDate, Integer children) {
+        this.id = id;
         this.name = name;
         this.cpf = cpf;
         this.income = income;
@@ -26,6 +28,7 @@ public class ClientDTO {
     }
 
     public ClientDTO(Client entity) {
+        id = entity.getId();
         name = entity.getName();
         cpf = entity.getCpf();
         income = entity.getIncome();
@@ -33,6 +36,9 @@ public class ClientDTO {
         children = entity.getChildren();
     }
 
+    public Long getId() {
+        return id;
+    }
     public String getName() {
         return name;
     }
