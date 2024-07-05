@@ -51,13 +51,9 @@ public class SaleService {
 	}
 
 	private String[] applyDefaultDateRange(String minDate, String maxDate) {
-		if (maxDate == null) {
-			maxDate =  LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault()).toString();
-		}
+		maxDate = maxDate == null ? LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault()).toString() : maxDate;
+		minDate = minDate == null ? LocalDate.parse(maxDate).minusYears(1L).toString() : minDate;
 
-		if (minDate == null) {
-			minDate = LocalDate.parse(maxDate).minusYears(1L).toString();
-		}
 		return new String[] { minDate, maxDate };
 	}
 }
