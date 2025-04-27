@@ -1,6 +1,8 @@
 package com.devsuperior.dsmeta.repositories;
 
+import com.devsuperior.dsmeta.dto.SaleMinDTO;
 import com.devsuperior.dsmeta.dto.SalesReportDTO;
+import com.devsuperior.dsmeta.projections.SaleMinProjection;
 import com.devsuperior.dsmeta.projections.SummarySaleProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,12 +10,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.devsuperior.dsmeta.entities.Sale;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
+
 
 public interface SaleRepository extends JpaRepository<Sale, Long> {
+
+    @Query(nativeQuery = true, value = "SELECT tb_sales.id, tb_sales.amount, tb_sales.date FROM tb_sales WHERE tb_sales.id = :id")
+    Optional<SaleMinProjection> getSaleById(Long id);
 	
     @Query(nativeQuery = true, value = "SELECT tb_seller.name AS sellerName, SUM(tb_sales.amount) AS total " +
             "FROM tb_seller " +
